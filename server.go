@@ -2,16 +2,24 @@
 package main
 
 import (
-	"fmt"
+
 	"log"
 	"net/http"
+	"github.com/go-lang/routes"
+	"io"
 )
 
 func handler(w http.ResponseWriter, r *http.Request){
-	fmt.Fprintf(w,"I think server is listening at %s\n",r.URL.Path[1:])
+	w.Header().Set("Content-Type","text/plain")
+	w.WriteHeader(http.StatusOK)
+
+	io.WriteString(w, "Hello this is generated from admin previlized")
 }
 
 func main(){
-	http.HandleFunc("/",handler);
-	log.Fatal(http.ListenAndServe(":8000",nil))
+
+	r:= router.NewRouter();
+
+	// http.HandleFunc("/",handler);
+	log.Fatal(http.ListenAndServe(":8000",r))
 }
